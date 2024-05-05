@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "449080780412",
+    "project_id": "touch-4b0ee",
+    "storage_bucket": "touch-4b0ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449080780412:android:caeaf72570959a34aa8bf9",
+        "android_client_info": {
+          "package_name": "com.divinetechs.touch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDx68PnKJhhNfUq6C9ssAGzGg1NSOSFXxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
