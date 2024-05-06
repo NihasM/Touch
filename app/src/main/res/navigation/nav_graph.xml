@@ -78,7 +78,7 @@
 
     <fragment
         android:id="@+id/chatlistPage"
-        android:name="com.divinetechs.touch.chatlist.UsersListFrag"
+        android:name="com.divinetechs.touch.userlist.UsersListFrag"
         android:label="fragment_chatlist_page"
         tools:layout="@layout/fragment_users_list" >
 </fragment>

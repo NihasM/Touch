@@ -59,11 +59,14 @@ class LoginPage : BaseFragment<FragmentLoginPageBinding>() {
             email=binding.edtUsername.text.toString()
             pass=binding.edtpass.text.toString()
             if(email.equals("")){
-                binding.textInputLayout.error="Please enter your contact no."
+                binding.textInputLayout.error="Please enter your email"
             }else if(pass.equals("")){
-                binding.passInputLayout.error="Please enter password"
                 binding.textInputLayout.error=null
+                binding.textInputLayout.isErrorEnabled=false
+                binding.passInputLayout.error="Please enter password"
             }else{
+                binding.passInputLayout.isErrorEnabled=false
+                binding.textInputLayout.isErrorEnabled=false
                 binding.passInputLayout.error=null
                 binding.textInputLayout.error=null
                 login(email,pass)
@@ -84,13 +87,11 @@ class LoginPage : BaseFragment<FragmentLoginPageBinding>() {
         mAuth.signInWithEmailAndPassword(email, pass)
             .addOnCompleteListener(requireActivity(), OnCompleteListener<AuthResult> { task ->
                 if (task.isSuccessful) {
-                    Log.d("kool", "createUserWithEmail:success")
                     SharedPreferences.saveString(requireContext(), Constants.UserId, email)
                     SharedPreferences.saveString(requireContext(), Constants.Password, pass)
                     findNavController().navigate(R.id.action_login_to_homepage)
                 } else {
-                    Log.d("kool", "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(getActivity(), R.string.something_went_wrong, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(getActivity(), R.string.something_went_wrong_enter_valid_detail, Toast.LENGTH_SHORT).show()
                 }
             })
     }

@@ -1,27 +1,20 @@
 package com.divinetechs.touch
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import com.divinetechs.touch.chatlist.Users
+import com.divinetechs.touch.userlist.Users
 import com.divinetechs.touch.databinding.FragmentRegistrationPageBinding
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -37,7 +30,8 @@ class RegistrationPage : BaseFragment<FragmentRegistrationPageBinding>() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private lateinit var mStorageRef: StorageReference
-    private lateinit var imageUri: Uri
+    private var imageUri: Uri? = null
+
 
 
     override fun getLayoutRes(): Int {
@@ -80,24 +74,46 @@ class RegistrationPage : BaseFragment<FragmentRegistrationPageBinding>() {
             email=binding.edtContactno.text.toString()
             pass=binding.edtpass.text.toString()
             cnfpass=binding.edtConfirmPass.text.toString()
-            /*if(username==""){
-                binding.textInputName.error="Please enter your user name"
-            }else if(email==""){
-                binding.textInputName.error=null
-                binding.passInputContactno.error="Please enter your contact no."
-            }else if(pass==""){
-                binding.passInputContactno.error=null
-                binding.passInputPass.error="Please enter your password"
-            }else if(cnfpass==""){
-                binding.passInputPass.error=null
+            if(username.isNullOrEmpty()){
+                binding.textInputName.error="Please enter username"
+                binding.passInputContactno.isErrorEnabled=false
+                binding.passInputPass.isErrorEnabled=false
+                binding.inputConfirmPass.isErrorEnabled=false
+            }else if(email.isNullOrEmpty()){
+                binding.textInputName.isErrorEnabled=false
+                binding.passInputPass.isErrorEnabled=false
+                binding.inputConfirmPass.isErrorEnabled=false
+                binding.textInputName.isErrorEnabled=false
+                binding.passInputContactno.error="Please enter email"
+            }else if(!isValidEmail(email)){
+                binding.textInputName.isErrorEnabled=false
+                binding.passInputPass.isErrorEnabled=false
+                binding.inputConfirmPass.isErrorEnabled=false
+                binding.passInputContactno.error="Please enter vaild email"
+            }else if(pass.isNullOrEmpty()){
+                binding.textInputName.isErrorEnabled=false
+                binding.passInputContactno.isErrorEnabled=false
+                binding.inputConfirmPass.isErrorEnabled=false
+                binding.passInputContactno.isErrorEnabled=false
+                binding.passInputPass.error="Please enter password"
+            }else if(pass.length<6){
+                binding.textInputName.isErrorEnabled=false
+                binding.passInputContactno.isErrorEnabled=false
+                binding.inputConfirmPass.isErrorEnabled=false
+                binding.passInputPass.error="Password length should be 6 or more then that"
+            }else if(cnfpass.isNullOrEmpty()){
+                binding.passInputPass.isErrorEnabled=false
                 binding.inputConfirmPass.error="Please confirm your password"
-            }else{
-                binding.inputConfirmPass.error=null
-                Toast.makeText(requireContext(), "OK!", Toast.LENGTH_SHORT).show()
+            }else if(imageUri==null){
+                binding.passInputPass.isErrorEnabled=false
+                showSnackbar("Please upload profile photo")
             }
-            findNavController().navigate(R.id.action_signup_to_chatlist)*/
-            (requireActivity() as MainActivity).progress(true)
-            signup(username,email,pass)
+            else if(chkpass){
+                binding.inputConfirmPass.isErrorEnabled=false
+                (requireActivity() as MainActivity).progress(true)
+                signup(username,email,pass)
+            }
+
         }
 
         binding.imgBtn.setOnClickListener {
@@ -135,43 +151,56 @@ class RegistrationPage : BaseFragment<FragmentRegistrationPageBinding>() {
     }
 
     fun addUserToDatabase(name: String, email: String, uid: String){
-
         mDbRef = FirebaseDatabase.getInstance().getReference()
-        mDbRef.child("user").child(uid).setValue(Users(name,email,uid))
+        val userRef = mDbRef.child("user").child(uid)
 
-        if(imageUri!=null){
-            uploadprofile()
+        // Create a Users object with name, email, and UID
+        val user = Users(name, email, uid)
+
+        // Set user data in the database
+        userRef.setValue(user).addOnSuccessListener {
+            // If user data is successfully set, now upload profile image
+            if(imageUri != null){
+                uploadProfile(uid)
+            } else {
+                onPhotoUploadSuccess()
+            }
+        }.addOnFailureListener { exception ->
+            // Handle failures
+            Log.e("TAG", "Failed to add user: $exception")
+            onPhotoUploadFailure()
         }
-
     }
 
-    fun uploadprofile(){
-        /*if(imageUri!=null){
-            mStorageRef = FirebaseStorage.getInstance().getReference("Users/"+mAuth.currentUser?.uid)
-            mStorageRef.putFile(imageUri).addOnSuccessListener {
+    fun uploadProfile(uid: String) {
+        // Create a storage reference with the UID of the user
+        mStorageRef = FirebaseStorage.getInstance().getReference("Users/$uid/profile.jpg")
 
-                Toast.makeText(context, "Image uploaded successfully", Toast.LENGTH_SHORT).show()
-
-
-            }.addOnFailureListener {
-                Toast.makeText(context, "Image uploaded failed", Toast.LENGTH_SHORT).show()
+        // Upload the image
+        mStorageRef.putFile(imageUri!!).addOnSuccessListener { taskSnapshot ->
+            // Get the download URL of the uploaded image
+            mStorageRef.downloadUrl.addOnSuccessListener { uri ->
+                // Update the user data in the database with the download URL of the image
+                val userRef = FirebaseDatabase.getInstance().getReference("user/$uid")
+                userRef.child("profileImageUrl").setValue(uri.toString()).addOnSuccessListener {
+                    // On successful upload, navigate to the homepage
+                    onPhotoUploadSuccess()
+                }.addOnFailureListener { exception ->
+                    // Handle failures
+                    Log.e("TAG", "Failed to update profile image URL: $exception")
+                    onPhotoUploadFailure()
+                }
             }
-        }else{
-            findNavController().navigate(R.id.action_signup_to_homepage)
-        }*/
-
-        PhotoUploader.uploadPhoto(
-            requireContext(),
-            mAuth,
-            imageUri,
-            { onPhotoUploadSuccess() },
-            { onPhotoUploadFailure() }
-        )
-
+        }.addOnFailureListener { exception ->
+            // Handle failures
+            Log.e("TAG", "Failed to upload profile image: $exception")
+            onPhotoUploadFailure()
+        }
     }
 
     private fun onPhotoUploadSuccess() {
         (requireActivity() as MainActivity).progress(false)
+        showSnackbar("Successfully signed up")
         findNavController().navigate(R.id.action_signup_to_homepage)
     }
 
@@ -191,6 +220,10 @@ class RegistrationPage : BaseFragment<FragmentRegistrationPageBinding>() {
         }
     }
 
+    fun isValidEmail(email: String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+        return email.matches(emailPattern.toRegex())
+    }
 
 
 }

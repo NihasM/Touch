@@ -52,11 +52,16 @@
                 android:id="@+id/imgprofile"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/mainlogo"
                 android:layout_margin="10dp"
+                android:src="@drawable/newprofileimg"
+                android:background="@drawable/blackborder"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#000000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                />
+
+            />
+
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

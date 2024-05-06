@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     lateinit var binding: B
@@ -44,6 +46,9 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
     // Example function to set toolbar title
 
+    fun showSnackbar(message: String) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
+    }
 
 }
 

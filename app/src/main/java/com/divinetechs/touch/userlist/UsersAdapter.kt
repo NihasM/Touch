@@ -1,11 +1,10 @@
-package com.divinetechs.touch.chatlist
+package com.divinetechs.touch.userlist
 
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -31,14 +30,14 @@ class UsersAdapter(val context: Context,val userList: ArrayList<Users>):
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
         val currentUser= userList[position]
         holder.textName.text=currentUser.name
+        Log.d("kool", "onBindViewHolder: "+currentUser.profileImageUrl)
 // Load image using Glide
-        /*Glide.with(context)
-            .load(currentUser.imageUrl) // assuming you have a field for profile image URL in Users class
+        Glide.with(context)
+            .load(currentUser.profileImageUrl) // assuming you have a field for profile image URL in Users class
             .placeholder(R.drawable.iconprofile) // optional placeholder while loading
             .error(R.drawable.iconprofile) // optional error placeholder
             //.transition(DrawableTransitionOptions.withCrossFade()) // optional transition
             .into(holder.imgProfile)
-*/
 
     }
 

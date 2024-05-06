@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background color (black border) -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#000000" />
+        </shape>
+    </item>
+    <!-- Inner circle (your CircleImageView) -->
+    <item android:top="1dp" android:left="1dp" android:right="1dp" android:bottom="1dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF" /> <!-- Adjust the color if needed -->
+        </shape>
+    </item>
+</layer-list>

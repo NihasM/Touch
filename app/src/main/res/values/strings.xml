@@ -6,5 +6,6 @@
     <string name="profile">Profile</string>
     <string name="search">Search</string>
     <string name="signup_fail">SignUp Failed!</string>
-    <string name="something_went_wrong">Something went wrong!</string>
+    <string name="something_went_wrong">Something went wrong, Please enter valid email and password</string>
+    <string name="something_went_wrong_enter_valid_detail">Something went wrong please enter a valid email and password.</string>
 </resources>

@@ -21,5 +21,13 @@
         <item name="strokeColor">@color/primary</item>
     </style>
 
+    <style name="logoutButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textSize">15sp</item>
+        <item name="backgroundTint">#DD7B7B</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="rippleColor">#F64848</item>
+        <item name="strokeColor">@color/black</item>
+    </style>
 
 </resources>

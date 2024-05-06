@@ -1,9 +1,8 @@
-package com.divinetechs.touch.chatlist
+package com.divinetechs.touch.userlist
 
 import android.os.Build
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.divinetechs.touch.BaseFragment

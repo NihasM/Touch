@@ -1,14 +1,12 @@
 package com.divinetechs.touch
 
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.divinetechs.touch.chatlist.UsersListFrag
+import com.divinetechs.touch.userlist.UsersListFrag
 import com.divinetechs.touch.databinding.ActivityMainBinding
 import com.divinetechs.touch.home.HomeFragment
 import com.divinetechs.touch.profile.ProfileFragment
@@ -96,12 +94,12 @@ class MainActivity : AppCompatActivity() {
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             // Specify the enter and exit animations
-            setCustomAnimations(
+           /* setCustomAnimations(
                 R.anim.slide_in_from_right, // enter animation
                 R.anim.slide_out_to_left, // exit animation
                 R.anim.slide_in_from_left, // pop enter animation
                 R.anim.slide_out_to_right // pop exit animation
-            )
+            )*/
 
             // Replace the fragment
             replace(R.id.splash_host, fragment)
@@ -110,6 +108,7 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
     }
+
 
 
 

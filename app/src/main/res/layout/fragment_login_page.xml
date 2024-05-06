@@ -44,7 +44,8 @@
             android:src="@drawable/imglogin1"
             android:paddingHorizontal="50dp"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="250dp"
+            app:layout_constraintBottom_toTopOf="@+id/lyuser"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llheader"
@@ -70,7 +71,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/passInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -88,7 +88,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:errorEnabled="true"
                 style="@style/OutlinedBoxWhiteWithBlackOutline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
